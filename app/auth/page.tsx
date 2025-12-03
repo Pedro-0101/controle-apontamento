@@ -1,6 +1,12 @@
-// Dummy imports
-export default async function Page() {
+"use client"
+
+import { CardLogin } from "./CardLogin";
+import AuthCallback from "./auth";
+
+export default function Page() {
   return (
-    <h1>Auth</h1>
+    <div className="flex justify-center items-center h-screen">
+      <CardLogin onSubmit={AuthCallback} />
+    </div>
   )
 }

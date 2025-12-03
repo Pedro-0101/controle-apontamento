@@ -1,12 +1,15 @@
-export default function DashboardLayout({
-  children,
-}: {
+import "./globals.css"
+
+interface RootLayoutProps {
   children: React.ReactNode
-}) {
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body>
-        <main>{children}</main>
+      <head />
+      <body className="dark">
+        {children}
       </body>
     </html>
   )
