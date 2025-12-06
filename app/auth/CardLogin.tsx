@@ -1,62 +1,42 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import AuthCallback from "./auth";
 
-interface CardLoginProps {
-  onSubmit: (event: React.FormEvent) => void;
-}
+export default function CardLogin() {
+  const [code, setCode] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
-export function CardLogin({ onSubmit }: CardLoginProps) {
+  const handleLogin = async () => {
+    setIsLoading(true);
+    try {
+      if (await AuthCallback(code)) {
+        router.push("/unidades");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <Card className="w-full max-w-sm">
-      <CardHeader>
-        <CardTitle>Faça login para continuar</CardTitle>
-        <CardDescription>
-          Insira seu email e senha para fazer login
-        </CardDescription>
-      </CardHeader>
-      <form onSubmit={onSubmit}>
-        <CardContent>
-          <div className="flex flex-col gap-6">
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                required
-              />
-            </div>
-            <div className="grid gap-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Senha</Label>
-                <a
-                  href="#"
-                  className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                >
-                  Esqueceu sua senha?
-                </a>
-              </div>
-              <Input id="password" type="password" required />
-            </div>
-          </div>
-        </CardContent>
-        <CardFooter className="flex-col gap-2">
-          <Button type="submit" className="w-full">
-            Login
-          </Button>
-        </CardFooter>
-      </form>
-    </Card>
+    <div className="flex flex-col items-center justify-center h-screen">
+      <h1>CardLogin</h1>
+      <input
+        type="text"
+        value={code}
+        onChange={(e) => setCode(e.target.value)}
+        className="border border-gray-300 rounded p-2"
+        disabled={isLoading}
+      />
+      <button
+        className="bg-blue-500 text-white p-2 rounded"
+        onClick={handleLogin}
+        disabled={isLoading}
+      >
+        {isLoading ? "Carregando..." : "Login"}
+      </button>
+    </div>
   )
 }
